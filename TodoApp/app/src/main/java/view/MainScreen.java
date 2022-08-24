@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
 import controller.ProjectController;
@@ -11,6 +7,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.table.TableModel;
 import model.Project;
 
 
@@ -23,7 +20,9 @@ public class MainScreen extends javax.swing.JFrame {
     ProjectController projectController;
     TaskController taskController;
     
-    DefaultListModel projectModel;
+    DefaultListModel projectsModel;
+    TasksTableModel tasksModel;
+    private TableModel taskModel;
     
     
     
@@ -421,21 +420,30 @@ public class MainScreen extends javax.swing.JFrame {
     }
     
     public void initComponetsModel(){
-        projectModel = new DefaultListModel();
+        projectsModel = new DefaultListModel();
         loadProject();
+        
+        tasksModel = new TaskTableModel();
+        jTableTasks.setModel(taskModel);
         
     }
     
     public void loadProject(){
         List<Project> projects = projectController.getAll();
 
-        projectModel.clear();
+        projectsModel.clear();
         
         for (int i = 0; i < projects.size(); i++) {
             Project project = projects.get(i);
-            projectModel.addElement(project);
+            projectsModel.addElement(project);
         }
-        jListProjects.setModel(projectModel);
+        jListProjects.setModel(projectsModel);
         
+    }
+
+    private static class TaskTableModel extends TasksTableModel {
+
+        public TaskTableModel() {
+        }
     }
 }
